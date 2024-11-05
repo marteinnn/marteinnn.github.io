@@ -66,7 +66,7 @@ function togglePlayer() {
     toggleArrow.classList.toggle('rotated');
 }
 
-// Set the Spotify player on page load
+// Set the Spotify player on page load 
 window.onload = () => {
     setSpotifyPlayer();
     document.querySelector('.toggle-arrow').addEventListener('click', togglePlayer);
