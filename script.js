@@ -6,6 +6,12 @@ document.addEventListener('DOMContentLoaded', function() {
         const logo = document.getElementById('logo');
         logo.classList.add('animate');
     }
+
+    // Slide up the "Song of the Day" container after 5 seconds
+    setTimeout(() => {
+        const songContainer = document.getElementById('song-of-the-day');
+        songContainer.classList.add('show');
+    }, 3000);
 });
 
 const clientId = 'bc008b5aa8df4ccd901b51b2cd2f20b5';
@@ -44,14 +50,19 @@ async function setSpotifyPlayer() {
     const firstTrackUri = await getFirstTrack();
     const iframe = document.getElementById('spotify-player');
     iframe.src = `https://open.spotify.com/embed/track/${firstTrackUri.split(':')[2]}?utm_source=generator`;
-    document.querySelector('.song-of-the-day').classList.add('show'); // Show the content with transition
 }
 
 // Function to handle the toggle of the song of the day container
 function togglePlayer() {
     const songContainer = document.querySelector('.song-of-the-day');
     const toggleArrow = document.querySelector('.toggle-arrow i');
-    songContainer.classList.toggle('show');
+    if (songContainer.classList.contains('show')) {
+        songContainer.classList.remove('show');
+        songContainer.classList.add('hide');
+    } else {
+        songContainer.classList.remove('hide');
+        songContainer.classList.add('show');
+    }
     toggleArrow.classList.toggle('rotated');
 }
 
