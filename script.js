@@ -1,8 +1,8 @@
 document.addEventListener('DOMContentLoaded', function() {
     console.log('Website is loaded and ready!');
 
-    // Add animation class to logo on index.html
-    if (window.location.pathname.endsWith('index.html')) {
+    // Add animation class to logo on index
+    if (window.location.pathname.endsWith('index')) {
         const logo = document.getElementById('logo');
         logo.classList.add('animate');
     }
@@ -71,3 +71,8 @@ window.onload = () => {
     setSpotifyPlayer();
     document.querySelector('.toggle-arrow').addEventListener('click', togglePlayer);
 };
+
+if (window.location.pathname.endsWith('index')) {
+    const logo = document.getElementById('logo');
+    logo.classList.add('animate');
+}
