@@ -142,17 +142,6 @@ main {
     animation: fadeInUp 1s ease-in-out; /* Add animation */
 }
 
-@keyframes fadeInUp {
-    0% {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    100% {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
 .content > p {
     font-size: 18px;
     color: #666;
@@ -199,6 +188,37 @@ main {
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
 }
 
+
+/* Keyframe animation for spinning and scaling */
+@keyframes funny-spin {
+    0% {
+        transform: scale(1) rotate(0deg);
+        background-color: #ffffff;
+    }
+    25% {
+        transform: scale(1.2) rotate(90deg);
+        background-color: #ffcccb; /* Light red */
+    }
+    50% {
+        transform: scale(1.5) rotate(180deg);
+        background-color: #ffff99; /* Light yellow */
+    }
+    75% {
+        transform: scale(1.2) rotate(270deg);
+        background-color: #ccffcc; /* Light green */
+    }
+    100% {
+        transform: scale(1) rotate(360deg);
+        background-color: #ffffff;
+    }
+}
+
+/* Class to trigger the funny effect */
+.profile-photo.funny {
+    animation: funny-spin 2s infinite;
+    box-shadow: 0 10px 30px rgba(255, 0, 0, 0.5); /* Dramatic red shadow */
+}
+
 .description {
     max-width: 900px;
     text-align: center;
@@ -209,24 +229,30 @@ main {
 }
 
 .schools {
-    flex-direction: column;
+    display: flex;
+    flex-direction: row;
+    justify-content: center; /* Center the schools */
     align-items: center;
-    gap: 10px;
+    gap: 100px; /* Add spacing between the schools */
+    padding: 35px; /* Add padding to the container */
 }
 
 .school {
+    padding: 10px;
     display: flex;
+    flex-direction: column; /* Stack content inside each school */
     align-items: center;
     gap: 20px;
     text-align: left;
-    padding: 10px;
     background: #f5f5f5;
     border-radius: 10px;
     transition: transform 0.2s ease, background-color 0.2s ease;
     text-decoration: none;
     color: inherit;
-    margin: 10%;
     border: 3px solid #909090;
+    height: 250px;
+    width: 350px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
 }
 
 .school:hover {
@@ -432,7 +458,7 @@ footer {
     left: 50%;
     transform: translateX(-50%);
     background-color: #868686;
-    width: 15px;
+    width: 20px;
     height: 15px;
     border-radius: 5px 5px 0 0;
     cursor: pointer;
@@ -451,3 +477,67 @@ footer {
 .toggle-arrow i.rotated {
     transform: rotate(180deg);
 }
+
+/* Centering loading animation */
+.loading-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 10vh;
+    font-family: Arial, sans-serif;
+    text-align: center;
+    overflow: hidden;
+    position: relative;
+  }
+  
+  /* Dot animation */
+  .loading-dot {
+    width: 8px;
+    height: 8px;
+    background-color: #000;
+    border-radius: 50%;
+    animation: moveDot 2s forwards, pulse 1.5s infinite;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  
+  /* Hidden text (initially) */
+  .loading-text {
+    font-size: 20px;
+    opacity: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    display: inline-block;
+    max-width: 0;
+    transition: max-width 2s linear, opacity 0.5s ease;
+  }
+  
+  /* Pulse animation for the dot */
+  @keyframes pulse {
+    0%, 100% {
+      transform: translateX(-50%) scale(1);
+      opacity: 1;
+    }
+    50% {
+      transform: translateX(-50%) scale(1.5);
+      opacity: 0.5;
+    }
+  }
+  
+  /* Move the dot into the text */
+  @keyframes moveDot {
+    0% {
+      transform: translateX(-50%) scale(1);
+      opacity: 1;
+    }
+    80% {
+      transform: translateX(-50%) scale(0.3);
+      opacity: 0.8;
+    }
+    100% {
+      transform: translateX(-10px); /* Adjust to match text alignment */
+      opacity: 0;
+    }
+  }
+  
