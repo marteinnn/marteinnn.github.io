@@ -130,16 +130,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 1500); // Adjust timing to sync with the dot's movement
 });
 
-document.addEventListener('DOMContentLoaded', function() {
-    const overlay = document.getElementById('animation-overlay');
-    setTimeout(() => {
-        overlay.classList.add('circle-reveal-animation');
-    }); // Delay the animation slightly to ensure the page is ready
-
-    overlay.addEventListener('animationend', () => {
-        overlay.style.display = 'none'; // Hide the overlay after the animation
-    });
-});
 
 
 
