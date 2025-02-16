@@ -541,3 +541,30 @@ footer {
     }
   }
   
+
+/* Animation overlay styles */
+#animation-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: black;
+    z-index: 2000; /* Make sure this is above all other content */
+    pointer-events: none; /* Allow clicks to pass through when not needed */
+}
+
+/* Keyframes for the circle animation */
+@keyframes circleReveal {
+    from {
+        clip-path: circle(0% at 50% 50%);
+    }
+    to {
+        clip-path: circle(150% at 50% 50%);
+    }
+}
+
+/* Applied animation class */
+.circle-reveal-animation {
+    animation: circleReveal 1s ease forwards;
+}

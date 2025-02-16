@@ -19,9 +19,11 @@ document.addEventListener('DOMContentLoaded', function () {
     }, 3000);
 });
 
-const clientId = 'bc008b5aa8df4ccd901b51b2cd2f20b5';
-const clientSecret = '2797f51f6bb64e14940747c4398d5ae7';
-const playlistId = '37i9dQZF1E383GXoNnhlyt'; // Updated playlist ID
+const clientId = '68090f535c2f4144a2f28c1bdab06f36';
+const clientSecret = 'e4e01623e5764dce91ea05d7527f1ec0';
+const playlistId = '6TalKNgkhDJSr8Oi1tSMU6'; // New playlist ID
+
+
 
 // Function to get Spotify access token
 async function getAccessToken() {
@@ -38,25 +40,60 @@ async function getAccessToken() {
 }
 
 // Function to get the first track of the playlist
-async function getFirstTrack() {
-    const accessToken = await getAccessToken();
-    const response = await fetch(`https://api.spotify.com/v1/playlists/${playlistId}/tracks?limit=1&offset=0`, {
-        headers: {
-            'Authorization': 'Bearer ' + accessToken
+// Function to get the first track of the playlist
+async function getRandomTrack() {
+    const lastFetchTime = localStorage.getItem('lastFetchTime');
+    const now = new Date().getTime();
+
+    // Check if 24 hours have passed or if there's no stored track
+    if (!lastFetchTime || now - lastFetchTime >= 86400000) {
+        const accessToken = 'BQClLO0P8WKnExORaZxIbXzzLic4ABGjKNJpuRzV_ztvoaSAiAOD23-Zyfgv200z7mS8g8BwUNMab24SCUigaxCQMkjWhx3om8fTFBifYtu_NGl1z7wed3dhP0F_x2tF5AI3w7UoJA0';
+        const response = await fetch(`https://api.spotify.com/v1/playlists/${playlistId}/tracks?fields=total`, {
+            headers: {
+                'Authorization': 'Bearer ' + accessToken
+            }
+        });
+        const data = await response.json();
+        if (data.total > 0) {
+            const randomOffset = Math.floor(Math.random() * data.total);
+            const trackResponse = await fetch(`https://api.spotify.com/v1/playlists/${playlistId}/tracks?limit=1&offset=${randomOffset}`, {
+                headers: {
+                    'Authorization': 'Bearer ' + accessToken
+                }
+            });
+            const trackData = await trackResponse.json();
+            if (trackData.items && trackData.items.length > 0) {
+                const randomTrackUri = trackData.items[0].track.uri;
+                // Store the track URI and the fetch time
+                localStorage.setItem('lastTrackUri', randomTrackUri);
+                localStorage.setItem('lastFetchTime', now);
+                return randomTrackUri;
+            }
         }
-    });
-    const data = await response.json();
-    const firstTrackUri = data.items[0].track.uri;
-    console.log("Hvað ertu að gera hérna?")
-    return firstTrackUri;
+    } else {
+        // Return the stored track URI if still within the 24-hour window
+        return localStorage.getItem('lastTrackUri');
+    }
+
+    console.error('No tracks found or invalid data:', data);
+    return null;
 }
+
+
 
 // Function to set the iframe src to the first track
 async function setSpotifyPlayer() {
-    const firstTrackUri = await getFirstTrack();
-    const iframe = document.getElementById('spotify-player');
-    iframe.src = `https://open.spotify.com/embed/track/${firstTrackUri.split(':')[2]}?utm_source=generator`;
+    const trackUri = await getRandomTrack(); // This will handle fetching a new track or returning a cached one
+    if (trackUri) {
+        const iframe = document.getElementById('spotify-player');
+        iframe.src = `https://open.spotify.com/embed/track/${trackUri.split(':')[2]}?utm_source=generator`;
+    } else {
+        console.error('Failed to set player source due to missing track URI.');
+    }
 }
+
+
+
 
 // Function to handle the toggle of the song of the day container
 function togglePlayer() {
@@ -80,6 +117,7 @@ window.onload = () => {
     document.querySelector('.toggle-arrow').addEventListener('click', togglePlayer);
 };
 
+
 // Typewriter effect on first load
 document.addEventListener('DOMContentLoaded', () => {
     const dot = document.querySelector('.loading-dot');
@@ -91,6 +129,18 @@ document.addEventListener('DOMContentLoaded', () => {
         text.style.opacity = "2"; // Fade-in text after typing
     }, 1500); // Adjust timing to sync with the dot's movement
 });
+
+document.addEventListener('DOMContentLoaded', function() {
+    const overlay = document.getElementById('animation-overlay');
+    setTimeout(() => {
+        overlay.classList.add('circle-reveal-animation');
+    }); // Delay the animation slightly to ensure the page is ready
+
+    overlay.addEventListener('animationend', () => {
+        overlay.style.display = 'none'; // Hide the overlay after the animation
+    });
+});
+
 
 
 // Wait for the page to load
