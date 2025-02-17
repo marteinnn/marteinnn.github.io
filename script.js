@@ -41,13 +41,14 @@ async function getAccessToken() {
 
 // Function to get the first track of the playlist
 // Function to get the first track of the playlist
+// Function to get a random track from the playlist
 async function getRandomTrack() {
     const lastFetchTime = localStorage.getItem('lastFetchTime');
     const now = new Date().getTime();
 
     // Check if 24 hours have passed or if there's no stored track
     if (!lastFetchTime || now - lastFetchTime >= 86400000) {
-        const accessToken = 'BQClLO0P8WKnExORaZxIbXzzLic4ABGjKNJpuRzV_ztvoaSAiAOD23-Zyfgv200z7mS8g8BwUNMab24SCUigaxCQMkjWhx3om8fTFBifYtu_NGl1z7wed3dhP0F_x2tF5AI3w7UoJA0';
+        const accessToken = await getAccessToken();  // Fetch a fresh access token dynamically
         const response = await fetch(`https://api.spotify.com/v1/playlists/${playlistId}/tracks?fields=total`, {
             headers: {
                 'Authorization': 'Bearer ' + accessToken
@@ -78,6 +79,7 @@ async function getRandomTrack() {
     console.error('No tracks found or invalid data:', data);
     return null;
 }
+
 
 
 
