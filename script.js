@@ -27,6 +27,7 @@ const playlistId = '6TalKNgkhDJSr8Oi1tSMU6'; // New playlist ID
 
 // Function to get Spotify access token
 async function getAccessToken() {
+    console.log("Fetching access token...");
     const response = await fetch('https://accounts.spotify.com/api/token', {
         method: 'POST',
         headers: {
@@ -36,48 +37,80 @@ async function getAccessToken() {
         body: 'grant_type=client_credentials'
     });
     const data = await response.json();
+    if (data.access_token) {
+        console.log("Access token obtained successfully.");
+    } else {
+        console.error("Failed to obtain access token:", data);
+    }
     return data.access_token;
 }
 
+
 // Function to get the first track of the playlist
 // Function to get the first track of the playlist
-// Function to get a random track from the playlist
 async function getRandomTrack() {
+    console.log("Attempting to fetch a new track...");
     const lastFetchTime = localStorage.getItem('lastFetchTime');
     const now = new Date().getTime();
 
-    // Check if 24 hours have passed or if there's no stored track
     if (!lastFetchTime || now - lastFetchTime >= 86400000) {
-        const accessToken = await getAccessToken();  // Fetch a fresh access token dynamically
-        const response = await fetch(`https://api.spotify.com/v1/playlists/${playlistId}/tracks?fields=total`, {
-            headers: {
-                'Authorization': 'Bearer ' + accessToken
-            }
-        });
-        const data = await response.json();
-        if (data.total > 0) {
-            const randomOffset = Math.floor(Math.random() * data.total);
-            const trackResponse = await fetch(`https://api.spotify.com/v1/playlists/${playlistId}/tracks?limit=1&offset=${randomOffset}`, {
+        console.log("No recent track or cache expired, fetching new token...");
+        const accessToken = await getAccessToken();
+        console.log("Access Token fetched:", accessToken);
+
+        try {
+            const response = await fetch(`https://api.spotify.com/v1/playlists/${playlistId}/tracks?fields=total`, {
                 headers: {
                     'Authorization': 'Bearer ' + accessToken
                 }
             });
-            const trackData = await trackResponse.json();
-            if (trackData.items && trackData.items.length > 0) {
-                const randomTrackUri = trackData.items[0].track.uri;
-                // Store the track URI and the fetch time
-                localStorage.setItem('lastTrackUri', randomTrackUri);
-                localStorage.setItem('lastFetchTime', now);
-                return randomTrackUri;
+            const data = await response.json();
+
+            if (data.error) {
+                console.error("Error fetching playlist data:", data.error);
+                return null;
             }
+
+            if (data.total > 0) {
+                const randomOffset = Math.floor(Math.random() * data.total);
+                console.log(`Fetching track at random offset: ${randomOffset}`);
+                const trackResponse = await fetch(`https://api.spotify.com/v1/playlists/${playlistId}/tracks?limit=1&offset=${randomOffset}`, {
+                    headers: {
+                        'Authorization': 'Bearer ' + accessToken
+                    }
+                });
+                const trackData = await trackResponse.json();
+
+                if (trackData.error) {
+                    console.error("Error fetching track:", trackData.error);
+                    return null;
+                }
+
+                if (trackData.items && trackData.items.length > 0) {
+                    const randomTrackUri = trackData.items[0].track.uri;
+                    console.log("Track URI fetched:", randomTrackUri);
+
+                    // Store the track URI and the fetch time
+                    localStorage.setItem('lastTrackUri', randomTrackUri);
+                    localStorage.setItem('lastFetchTime', now);
+                    return randomTrackUri;
+                } else {
+                    console.error("No tracks found at the specified offset.");
+                    return null;
+                }
+            } else {
+                console.error("Playlist contains no tracks.");
+                return null;
+            }
+        } catch (error) {
+            console.error("Failed to fetch track data:", error);
+            return null;
         }
     } else {
-        // Return the stored track URI if still within the 24-hour window
-        return localStorage.getItem('lastTrackUri');
+        const cachedTrackUri = localStorage.getItem('lastTrackUri');
+        console.log("Using cached track URI:", cachedTrackUri);
+        return cachedTrackUri;
     }
-
-    console.error('No tracks found or invalid data:', data);
-    return null;
 }
 
 
@@ -85,12 +118,14 @@ async function getRandomTrack() {
 
 // Function to set the iframe src to the first track
 async function setSpotifyPlayer() {
-    const trackUri = await getRandomTrack(); // This will handle fetching a new track or returning a cached one
+    console.log("Setting Spotify player...");
+    const trackUri = await getRandomTrack();
     if (trackUri) {
         const iframe = document.getElementById('spotify-player');
         iframe.src = `https://open.spotify.com/embed/track/${trackUri.split(':')[2]}?utm_source=generator`;
+        console.log("Spotify player set with new track URI.");
     } else {
-        console.error('Failed to set player source due to missing track URI.');
+        console.error("Failed to set player source due to missing track URI.");
     }
 }
 
