@@ -181,7 +181,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Optionally, display a funny message
         const funnyMessage = document.createElement('div');
-        funnyMessage.textContent = "Hehe silly 😜";
+        funnyMessage.textContent = "Hehe";
         funnyMessage.style.position = 'absolute';
         funnyMessage.style.top = `${profilePhoto.offsetTop - 50}px`;
         funnyMessage.style.left = `${profilePhoto.offsetLeft}px`;
@@ -202,3 +202,14 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 10000); // 10 seconds
     }, 60000); // 30 seconds
 });
+
+document.addEventListener('DOMContentLoaded', function () {
+    // Check if it's the index page
+    if (window.location.pathname === '/' || window.location.pathname.endsWith('index.html')) {
+        const overlay = document.getElementById('initial-overlay');
+        setTimeout(() => {
+            overlay.style.display = 'none'; // Remove the overlay after the animation
+        }, 8500); // Corresponds to the animation duration
+    }
+});
+

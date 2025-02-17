@@ -49,30 +49,56 @@ header h1 {
     color: #333;
 }
 
+@keyframes slideInFromLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-160px);  /* Start from -50px offset */
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+
+
+/* Existing styles for navigation */
 nav ul {
     list-style-type: none;
     padding: 0;
 }
 
 nav ul li {
-    display: inline;
+    display: inline-block; /* Ensure it supports animation */
     margin: 0 10px;
+    opacity: 0;
+    transform: translateX(-90px);
+    animation: slideInFromLeft 2.5s ease-out forwards;
 }
 
 nav ul li a {
     text-decoration: none;
     color: #727272;
-    font-size: 24px; /* Match the font size of .logo */
-    font-weight: bold; /* Match the font weight of .logo */
-    font-family: 'TeX Gyre Heros', 'TH', Roboto, Noto Sans KR, sans-serif; /* Match the font family of .logo */
-    transition: color 0.3s ease; /* Add transition for smooth color change */
+    font-size: 24px;
+    font-weight: bold;
+    font-family: 'TeX Gyre Heros', 'TH', Roboto, Noto Sans KR, sans-serif;
+    transition: color 0.3s ease;
     margin-left: 50px;
 }
 
 nav ul li a:hover {
-    color: #000000; /* Change color to black on hover */
+    color: #000000;
     text-decoration: underline;
 }
+
+/* Add staggered animation delays */
+nav ul li:nth-child(1) { animation-delay: 0.1s; }
+nav ul li:nth-child(2) { animation-delay: 0.2s; }
+nav ul li:nth-child(3) { animation-delay: 0.3s; }
+nav ul li:nth-child(4) { animation-delay: 0.4s; }
+nav ul li:nth-child(5) { animation-delay: 0.5s; }
+/* Continue adding delays as needed */
+
 
 header .logo {
     margin-left: 10px;
@@ -540,5 +566,34 @@ footer {
       opacity: 0;
     }
   }
+
+
+/* Overlay for the initial animation */
+.initial-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: black;
+    z-index: 2000;
+    animation: fadeZoomOut 1.5s ease forwards;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@keyframes fadeZoomOut {
+    0% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: scale(1.1);
+        visibility: hidden;
+    }
+}
+
   
 
