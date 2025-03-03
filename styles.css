@@ -71,9 +71,6 @@ nav ul {
 nav ul li {
     display: inline-block; /* Ensure it supports animation */
     margin: 0 10px;
-    opacity: 0;
-    transform: translateX(-90px);
-    animation: slideInFromLeft 2.5s ease-out forwards;
 }
 
 nav ul li a {
@@ -91,13 +88,6 @@ nav ul li a:hover {
     text-decoration: underline;
 }
 
-/* Add staggered animation delays */
-nav ul li:nth-child(1) { animation-delay: 0.1s; }
-nav ul li:nth-child(2) { animation-delay: 0.2s; }
-nav ul li:nth-child(3) { animation-delay: 0.3s; }
-nav ul li:nth-child(4) { animation-delay: 0.4s; }
-nav ul li:nth-child(5) { animation-delay: 0.5s; }
-/* Continue adding delays as needed */
 
 
 header .logo {
