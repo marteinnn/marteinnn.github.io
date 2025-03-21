@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marteinn's web</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="phonestyles.css" media="only screen and (max-width: 768px)">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="icon" href="logo-final.png" type="image/png"> 
+</head>
+<body>
+    <div class="initial-overlay" id="initial-overlay"></div>
+
+    <!-- Header Notice -->
+    <div class="header-notice">
+        <div class="header-notice-content">
+            <p>
+                •&nbsp;&nbsp;WELCOME TO MY WEBSITE. THIS IS A PERSONAL PROJECT FOR FUN&nbsp;&nbsp;•&nbsp;&nbsp;WELCOME TO MY WEBSITE. THIS IS A PERSONAL PROJECT FOR FUN&nbsp;&nbsp;•&nbsp;&nbsp;WELCOME TO MY WEBSITE. THIS IS A PERSONAL PROJECT FOR FUN&nbsp;&nbsp;•&nbsp;&nbsp;WELCOME TO MY WEBSITE. THIS IS A PERSONAL PROJECT FOR FUN&nbsp;&nbsp;•&nbsp;&nbsp;WELCOME TO MY WEBSITE. THIS IS A PERSONAL PROJECT FOR FUN&nbsp;&nbsp;
+                •&nbsp;&nbsp;WELCOME TO MY WEBSITE. THIS IS A PERSONAL PROJECT FOR FUN&nbsp;&nbsp;•&nbsp;&nbsp;WELCOME TO MY WEBSITE. THIS IS A PERSONAL PROJECT FOR FUN&nbsp;&nbsp;•&nbsp;&nbsp;WELCOME TO MY WEBSITE. THIS IS A PERSONAL PROJECT FOR FUN&nbsp;&nbsp;
+            </p>
+        </div>
+    </div>
+
+    <!-- Header Section -->
+    <header>
+        <div class="header-container">
+            <h1><a href="index" class="logo"><img src="logo-final.png" alt="Logo" class="logo-img" id="logo"></a></h1>
+            <nav>
+                <ul>
+                    <li><a href="index">Home</a></li>
+                    <li><a href="about">About</a></li>
+                    <li><a href="contact">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <div class="content">
+            <!-- Loading Animation -->
+            <div class="loading-container">
+            </div>
+
+            <div class="container">
+                <!-- About Me Section -->
+                <section class="about-me">
+                    <img src="me.png" alt="Your Photo" class="profile-photo">
+                    <p class="description">
+                        Hi, I'm Marteinn Hjálmarsson. A student at Reykjavík University studying Computer Science. I created this website to showcase my skills in web development. 
+                    </p>
+                </section>
+
+                <!-- Skills Section -->
+                <section class="skills">
+                    <h2>Skills</h2>
+                    <div class="skills-container">
+                        <span class="skill-tag">HTML</span>
+                        <span class="skill-tag">CSS</span>
+                        <span class="skill-tag">Python</span>
+                        <span class="skill-tag">JavaScript</span>
+                        <span class="skill-tag">React</span>
+                        <span class="skill-tag">SQL</span>
+                    </div>
+                </section>
+
+                <!-- Social Links Section -->
+                <section class="socials">
+                    <h2>Socials</h2>
+                    <div class="socials-container">
+                        <a href="https://linkedin.com/in/mart12345" class="social-link"><i class="fab fa-linkedin"></i> LinkedIn</a>
+                        <a href="https://github.com/marteinnn" class="social-link"><i class="fab fa-github"></i> GitHub</a>
+                    </div>
+                </section>
+            </div>
+        </div>
+
+        <!-- Song of the Day Section -->
+        <div class="song-of-the-day" id="song-of-the-day">
+            <div class="toggle-arrow">
+                <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="song-header">
+                <i class="fas fa-music"></i>
+                <h2>SONG OF THE DAY</h2>
+            </div>
+            <div class="song-details">
+                <iframe id="spotify-player" src="" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025</p>
+    </footer>
+
+    <!-- External JavaScript -->
+    <script src="script.js"></script>
+</body>
+</html>
