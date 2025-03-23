@@ -5,29 +5,20 @@ import { faGraduationCap, faBriefcase } from '@fortawesome/free-solid-svg-icons'
 
 const Content = styled.div`
   padding: 20px;
-  min-height: 100vh;
-  background: var(--background-color);
+  height: 100vh;
+  background: transparent;
   color: var(--text-color);
   position: relative;
   overflow: hidden;
 
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: 
-      linear-gradient(45deg, rgba(74, 144, 226, 0.1) 25%, transparent 25%),
-      linear-gradient(-45deg, rgba(74, 144, 226, 0.1) 25%, transparent 25%),
-      linear-gradient(45deg, transparent 75%, rgba(74, 144, 226, 0.1) 75%),
-      linear-gradient(-45deg, transparent 75%, rgba(74, 144, 226, 0.1) 75%);
-    background-size: 20px 20px;
-    background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
-    opacity: 0.7;
-    z-index: 0;
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  &::-webkit-scrollbar {
+    display: none;
   }
+
+  /* Hide scrollbar for IE, Edge and Firefox */
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
 `;
 
 const Container = styled.div`
@@ -36,16 +27,46 @@ const Container = styled.div`
   padding: 20px;
   position: relative;
   z-index: 1;
+  height: calc(100vh - 80px); /* Adjusted to account for top navigation */
+  overflow-y: scroll;
+  padding-bottom: 100px; /* Add extra padding at the bottom for better scrolling */
+
+  /* Custom scrollbar styling */
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: var(--accent-color);
+    border-radius: 4px;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: var(--hover-color);
+  }
+
+  /* For Firefox */
+  scrollbar-width: thin;
+  scrollbar-color: var(--accent-color) transparent;
 `;
 
 const Section = styled.div`
   margin-bottom: 60px;
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 10px;
+  background: var(--secondary-color);
+  border-radius: 20px;
   padding: 20px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(5px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  border: 5px solid var(--accent-color);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+  }
 
   &:last-child {
     margin-bottom: 100px;
@@ -69,12 +90,14 @@ const SectionHeader = styled.div`
 const ExperienceItem = styled.div`
   margin-bottom: 20px;
   padding: 15px;
-  background: rgba(255, 255, 255, 0.03);
-  border-radius: 8px;
-  transition: transform 0.3s ease;
+  background: var(--hover-color);
+  border-radius: 10px;
+  border: 3px solid var(--border-color);
+  transition: transform 0.2s ease, background-color 0.2s ease;
 
   &:hover {
-    transform: translateX(5px);
+    transform: translateY(-2px);
+    background: #eeeeee;
   }
 
   &:last-child {
@@ -138,7 +161,7 @@ const About = () => {
 
           <ExperienceItem>
             <ExperienceHeader>
-              <h3>Menntaskólinn í hamrahlíð</h3>
+              <h3>Menntaskólinn við Hamrahlíð</h3>
               <span>2017 - 2021</span>
             </ExperienceHeader>
             <ExperienceDetails>

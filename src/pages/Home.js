@@ -1,15 +1,21 @@
 import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMusic, faChevronUp, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faChevronUp } from '@fortawesome/free-solid-svg-icons';
 import { faLinkedin, faGithub } from '@fortawesome/free-brands-svg-icons';
-import { getRandomTrack } from '../services/spotifyService';
 
 const Content = styled.div`
   flex: 1;
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 1rem;
+  padding-bottom: 100px;
+
+  @media (max-width: 768px) {
+    padding: 0;
+    padding-bottom: 120px;
+    width: 100%;
+  }
 `;
 
 const Container = styled.div`
@@ -23,10 +29,20 @@ const Container = styled.div`
   max-width: 1200px;
   padding: 0 20px;
 
-  @media (max-width: 1024px) {
-    grid-template-columns: 1fr;
-    grid-template-rows: auto;
+  @media (max-width: 768px) {
+    display: flex;
+    flex-direction: column;
     gap: 20px;
+    padding: 0 10px;
+    margin: 20px auto;
+    margin-bottom: 40px;
+    width: 100%;
+  }
+
+  @media (max-width: 425px) {
+    padding: 0 8px;
+    gap: 15px;
+    margin-bottom: 60px;
   }
 `;
 
@@ -45,6 +61,13 @@ const AboutMe = styled.section`
   position: relative;
   overflow: hidden;
   height: 100%;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    padding: 20px;
+    height: auto;
+    margin-bottom: 20px;
+  }
 
   &:before {
     content: '';
@@ -166,6 +189,13 @@ const Skills = styled(Card)`
   grid-column: 4 / 7;
   grid-row: 1 / 2;
   height: 100%;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    height: auto;
+    margin-bottom: 20px;
+  }
+
   h2 {
     margin-bottom: 15px;
     color: var(--primary-color);
@@ -198,6 +228,11 @@ const SkillsContainer = styled.div`
   gap: 10px;
   padding: 5px;
   width: 100%;
+
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
 `;
 
 const SkillTag = styled.span`
@@ -241,6 +276,19 @@ const Socials = styled(Card)`
   grid-column: 4 / 7;
   grid-row: 2 / 3;
   height: 100%;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    height: auto;
+    padding: 15px;
+    margin-bottom: 40px;
+  }
+
+  @media (max-width: 425px) {
+    margin-bottom: 60px;
+    padding: 12px;
+  }
+
   h2 {
     margin-bottom: 15px;
     color: var(--primary-color);
@@ -248,6 +296,11 @@ const Socials = styled(Card)`
     font-weight: bold;
     position: relative;
     padding-bottom: 8px;
+
+    @media (max-width: 768px) {
+      margin-bottom: 10px;
+      font-size: 14px;
+    }
 
     &:after {
       content: '';
@@ -270,6 +323,10 @@ const SocialsContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
+
+  @media (max-width: 768px) {
+    gap: 8px;
+  }
 `;
 
 const SocialLink = styled.a`
@@ -287,6 +344,17 @@ const SocialLink = styled.a`
   overflow: hidden;
   backdrop-filter: blur(5px);
   border: 1px solid rgba(255, 255, 255, 0.2);
+
+  @media (max-width: 768px) {
+    font-size: 13px;
+    padding: 8px 12px;
+    gap: 8px;
+  }
+
+  @media (max-width: 425px) {
+    font-size: 12px;
+    padding: 8px 10px;
+  }
 
   &:before {
     content: '';
@@ -312,79 +380,6 @@ const SocialLink = styled.a`
 
   svg {
     font-size: 1rem;
-  }
-`;
-
-const SongOfTheDay = styled.div`
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: #868686;
-  padding: 8px 20px;
-  width: 100%;
-  border-radius: 12px 12px 0 0;
-  transform: translateY(100%);
-  transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.2);
-  z-index: 1000;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-
-  &:before {
-    content: '';
-    width: 40px;
-    height: 4px;
-    background: #666;
-    border-radius: 2px;
-    margin-bottom: 8px;
-    cursor: pointer;
-  }
-
-  iframe {
-    width: 100%;
-  }
-
-  &.show {
-    transform: translateY(0);
-  }
-`;
-
-const SongHeader = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  position: relative;
-  z-index: 1;
-
-  h2 {
-    font-size: 14px;
-    margin: 0;
-    font-weight: bold;
-    color: white;
-  }
-`;
-
-const SongContent = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  flex: 1;
-  justify-content: center;
-`;
-
-const CloseButton = styled.button`
-  background: none;
-  border: none;
-  color: white;
-  cursor: pointer;
-  padding: 4px;
-  transition: transform 0.3s ease;
-
-  &:hover {
-    transform: rotate(90deg);
   }
 `;
 
@@ -425,7 +420,7 @@ const MatrixRain = styled.canvas`
   width: 100%;
   height: 100%;
   z-index: -1;
-  opacity: 0.1;
+  opacity: 0.23;
   pointer-events: none;
 `;
 
@@ -437,7 +432,6 @@ const Home = () => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
 
-    // Set canvas size
     const resizeCanvas = () => {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
@@ -445,18 +439,15 @@ const Home = () => {
     resizeCanvas();
     window.addEventListener('resize', resizeCanvas);
 
-    // Matrix characters
-    const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*()*&^%";
-    const fontSize = 14;
+    const chars = "MARTEINN";
+    const fontSize = 18;
     const columns = canvas.width / fontSize;
     const drops = [];
 
-    // Initialize drops
     for (let i = 0; i < columns; i++) {
       drops[i] = 1;
     }
 
-    // Drawing function
     const draw = () => {
       ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -475,7 +466,6 @@ const Home = () => {
       }
     };
 
-    // Animation loop
     const interval = setInterval(draw, 33);
 
     return () => {
@@ -496,6 +486,17 @@ const Home = () => {
     };
   }, []);
 
+  useEffect(() => {
+    const meta = document.createElement('meta');
+    meta.name = 'viewport';
+    meta.content = 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0';
+    document.getElementsByTagName('head')[0].appendChild(meta);
+
+    return () => {
+      document.getElementsByTagName('head')[0].removeChild(meta);
+    };
+  }, []);
+
   return (
     <Content>
       <MatrixRain ref={canvasRef} />
@@ -505,10 +506,11 @@ const Home = () => {
           <Description>
             Hi, I'm Marteinn Hjálmarsson. A 23 year old Computer Science graduate from Reykjavík University.
             <br></br>
+            <br></br>
             I like to code and learn new things.
             <br></br>
             <br></br>
-            This website is a portfolio showcasing some of my skills and expeiences.
+            This website is a portfolio showcasing some of my skills and experiences.
             <br></br>
 
             

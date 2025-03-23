@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { getRandomTrack } from '../services/spotifyService';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons';
 
 const FooterContainer = styled.footer`
   position: fixed;
-  bottom: 0;
+  bottom: ${props => props.isHidden ? '-80px' : '0'};
   left: 0;
   right: 0;
   background: #868686;
@@ -14,11 +16,34 @@ const FooterContainer = styled.footer`
   align-items: center;
   justify-content: center;
   z-index: 1000;
-  opacity: 0;
-  transition: opacity 0.5s ease-in-out;
-  ${props => props.isLoaded && `
-    opacity: 1;
-  `}
+  opacity: ${props => props.isLoaded ? '1' : '0'};
+  transition: all 0.5s ease-in-out;
+`;
+
+const ToggleButton = styled.button`
+  position: absolute;
+  top: -24px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #868686;
+  border: none;
+  border-radius: 8px 8px 0 0;
+  padding: 4px 12px;
+  color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background: #777;
+  }
+
+  svg {
+    width: 16px;
+    height: 16px;
+  }
 `;
 
 const SongPlayer = styled.div`
@@ -28,6 +53,11 @@ const SongPlayer = styled.div`
   display: flex;
   align-items: center;
   gap: 20px;
+
+  @media (max-width: 768px) {
+    padding: 0 10px;
+    width: 100%;
+  }
 `;
 
 const SongTitle = styled.span`
@@ -38,6 +68,11 @@ const SongTitle = styled.span`
   min-width: 120px;
   text-align: center;
   line-height: 1.2;
+
+  @media (max-width: 768px) {
+    min-width: 80px;
+    font-size: 14px;
+  }
 `;
 
 const PlayerContainer = styled.div`
@@ -46,18 +81,31 @@ const PlayerContainer = styled.div`
   justify-content: center;
   max-width: 1600px;
   margin: 0 auto;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    max-width: 100%;
+    padding: 0 5px;
+  }
+
+  iframe {
+    @media (max-width: 768px) {
+      width: 120%;
+      height: 80px;
+    }
+  }
 `;
 
 const Footer = () => {
   const [spotifyTrack, setSpotifyTrack] = useState('');
   const [isLoaded, setIsLoaded] = useState(false);
+  const [isHidden, setIsHidden] = useState(false);
 
   useEffect(() => {
     const fetchTrack = async () => {
       const trackUri = await getRandomTrack();
       if (trackUri) {
         setSpotifyTrack(`https://open.spotify.com/embed/track/${trackUri.split(':')[2]}?utm_source=generator`);
-        // Add a small delay before showing the footer to ensure the player is loaded
         setTimeout(() => {
           setIsLoaded(true);
         }, 1000);
@@ -67,8 +115,15 @@ const Footer = () => {
     fetchTrack();
   }, []);
 
+  const toggleFooter = () => {
+    setIsHidden(!isHidden);
+  };
+
   return (
-    <FooterContainer isLoaded={isLoaded}>
+    <FooterContainer isLoaded={isLoaded} isHidden={isHidden}>
+      <ToggleButton onClick={toggleFooter}>
+        <FontAwesomeIcon icon={isHidden ? faChevronUp : faChevronDown} />
+      </ToggleButton>
       <SongPlayer>
         <SongTitle>SONG OF{'\n'}THE DAY</SongTitle>
         <PlayerContainer>

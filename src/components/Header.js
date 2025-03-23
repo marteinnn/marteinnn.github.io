@@ -12,7 +12,7 @@ const HeaderNotice = styled.div`
   z-index: 1000;
   overflow: hidden;
   white-space: nowrap;
-  height: 27px;
+  height: 30px;
   font-size: 3px;
   font-weight: bold;
 `;
@@ -54,11 +54,19 @@ const Logo = styled(Link)`
   &:hover {
     transform: translateY(-2px);
   }
+
+  @media (max-width: 768px) {
+    display: none;
+  }
 `;
 
 const LogoImg = styled.img`
   height: 80px;
   transition: transform 0.3s ease;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
 `;
 
 const Nav = styled.nav`

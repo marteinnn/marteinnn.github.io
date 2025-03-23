@@ -1,37 +1,22 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEnvelope, faPhone, faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons';
 
 const Content = styled.div`
-  padding: 20px;
-  min-height: 100vh;
-  background: var(--background-color);
+  padding: 0 20px;
+  min-height: calc(100vh - 200px);
+  background: transparent;
   color: var(--text-color);
   position: relative;
   overflow: hidden;
-
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: 
-      linear-gradient(45deg, rgba(74, 144, 226, 0.1) 25%, transparent 25%),
-      linear-gradient(-45deg, rgba(74, 144, 226, 0.1) 25%, transparent 25%),
-      linear-gradient(45deg, transparent 75%, rgba(74, 144, 226, 0.1) 75%),
-      linear-gradient(-45deg, transparent 75%, rgba(74, 144, 226, 0.1) 75%);
-    background-size: 20px 20px;
-    background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
-    opacity: 0.7;
-    z-index: 0;
-  }
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 `;
 
 const Container = styled.div`
-  max-width: 800px;
+  max-width: 1000px;
   margin: 0 auto;
   padding: 20px;
   position: relative;
@@ -39,127 +24,136 @@ const Container = styled.div`
 `;
 
 const ContactSection = styled.div`
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 10px;
+  background: var(--secondary-color);
+  border-radius: 20px;
   padding: 30px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(5px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  margin-bottom: 100px;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 30px;
-
-  @media (max-width: 768px) {
-    grid-template-columns: 1fr;
-  }
-`;
-
-const ContactInfoSection = styled.div`
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  border: 5px solid var(--accent-color);
+  margin: 0 auto;
+  width: 100%;
+  max-width: 500px;
   display: flex;
   flex-direction: column;
   gap: 20px;
 `;
 
-const ContactItem = styled.div`
+const AnimatedTitle = styled.div`
   display: flex;
-  align-items: center;
-  margin-bottom: 20px;
-  padding: 15px;
-  background: rgba(255, 255, 255, 0.03);
-  border-radius: 8px;
-  transition: transform 0.3s ease;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 30px;
+  padding: 0 20px;
+`;
+
+const Letter = styled.span`
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: var(--text-color);
+  opacity: ${props => props.visible ? 1 : 0};
+  transform: ${props => props.visible ? 'translateY(0) scale(1)' : 'translateY(-20px) scale(0.8)'};
+  transition: opacity 0.2s ease, transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
 
   &:hover {
-    transform: translateX(5px);
-  }
-
-  &:last-child {
-    margin-bottom: 0;
-  }
-`;
-
-const IconWrapper = styled.div`
-  width: 40px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: var(--accent-color);
-  border-radius: 50%;
-  margin-right: 15px;
-  color: white;
-`;
-
-const ContactInfo = styled.div`
-  h3 {
-    margin: 0;
+    transform: translateY(-2px) scale(1.1);
     color: var(--accent-color);
-    font-size: 1.1em;
-  }
-
-  p {
-    margin: 5px 0 0;
-    opacity: 0.9;
   }
 `;
 
-const TextBox = styled.div`
-  background: rgba(255, 255, 255, 0.03);
-  border-radius: 8px;
-  padding: 20px;
-  line-height: 1.6;
+const ContactItem = styled.div`
+  display: grid;
+  grid-template-columns: 50px 1fr;
+  align-items: center;
+  padding: 5px;
+  background: var(--hover-color);
+  border-radius: 10px;
+  border: 3px solid var(--border-color);
+  transition: transform 0.2s ease, background-color 0.2s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    background: #eeeeee;
+  }
+`;
+
+const Icon = styled(FontAwesomeIcon)`
+  font-size: 24px;
   color: var(--text-color);
-  opacity: 0.9;
-  font-size: 1.1em;
+  justify-self: center;
+`;
+
+const InfoContainer = styled.div`
+  text-align: left;
+`;
+
+const Label = styled.div`
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: var(--text-color);
+`;
+
+const Value = styled.div`
+  color: var(--text-light);
 `;
 
 const Contact = () => {
+  const text = "CONTACT ME!";
+  const [visibleLetters, setVisibleLetters] = useState(new Set());
+  
+  useEffect(() => {
+    const letters = text.split('');
+    let currentIndex = 0;
+    
+    const showLetters = () => {
+      if (currentIndex >= letters.length) return;
+      
+      setVisibleLetters(prev => new Set([...prev, currentIndex]));
+      currentIndex++;
+      
+      if (currentIndex < letters.length) {
+        setTimeout(showLetters, 100); // Show a new letter every 100ms
+      }
+    };
+    
+    setTimeout(showLetters, 300); // Start after 300ms
+  }, []);
+
   return (
     <Content>
       <Container>
+        <AnimatedTitle>
+          {text.split('').map((letter, index) => (
+            <Letter 
+              key={index}
+              visible={visibleLetters.has(index)}
+            >
+              {letter === ' ' ? '\u00A0' : letter}
+            </Letter>
+          ))}
+        </AnimatedTitle>
         <ContactSection>
-          <ContactInfoSection>
-            <ContactItem>
-              <IconWrapper>
-                <FontAwesomeIcon icon={faEnvelope} size="lg" />
-              </IconWrapper>
-              <ContactInfo>
-                <h3>Email</h3>
-                <p>hmarteinn@gmail.com</p>
-              </ContactInfo>
-            </ContactItem>
-
-            <ContactItem>
-              <IconWrapper>
-                <FontAwesomeIcon icon={faPhone} size="lg" />
-              </IconWrapper>
-              <ContactInfo>
-                <h3>Phone</h3>
-                <p>+354 6900066</p>
-              </ContactInfo>
-            </ContactItem>
-
-            <ContactItem>
-              <IconWrapper>
-                <FontAwesomeIcon icon={faMapMarkerAlt} size="lg" />
-              </IconWrapper>
-              <ContactInfo>
-                <h3>Location</h3>
-                <p>Reykjavík, Iceland</p>
-              </ContactInfo>
-            </ContactItem>
-          </ContactInfoSection>
-
-          <TextBox>
-          <br></br>
-          <br></br>
-          <br></br>
-          <br></br>
-          <br></br>
-          <br></br>
-          Dont hesitate to contact me if you have any questions or want to work together!
-          </TextBox>
+          <ContactItem>
+            <Icon icon={faEnvelope} />
+            <InfoContainer>
+              <Label>Email</Label>
+              <Value>hmarteinn@gmail.com</Value>
+            </InfoContainer>
+          </ContactItem>
+          <ContactItem>
+            <Icon icon={faPhone} />
+            <InfoContainer>
+              <Label>Phone</Label>
+              <Value>+354 6900066</Value>
+            </InfoContainer>
+          </ContactItem>
+          <ContactItem>
+            <Icon icon={faMapMarkerAlt} />
+            <InfoContainer>
+              <Label>Location</Label>
+              <Value>Reykjavík, Iceland</Value>
+            </InfoContainer>
+          </ContactItem>
         </ContactSection>
       </Container>
     </Content>
